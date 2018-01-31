@@ -93,10 +93,12 @@ public class RetrofitBeanDefinitionRegistrar implements ImportBeanDefinitionRegi
 			if (StringUtils.isEmpty(converterFactoryRef)) {
 				converterFactoryRef = globalConverterFactoryRef;
 			}
-			
+
+
+
 			BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(RetrofitServiceFactoryBean.class);
 			builder.addPropertyValue("serviceInterface", beanClassName);
-			builder.addPropertyValue("baseUrl", serviceAttributes.get("baseUrl"));
+			builder.addPropertyValue("baseUrl", environment.resolvePlaceholders((String) serviceAttributes.get("baseUrl")));
 			if (!StringUtils.isEmpty(httpClientRef)) {
 				builder.addPropertyReference("httpClient", httpClientRef);
 			}
