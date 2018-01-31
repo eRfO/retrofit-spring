@@ -21,9 +21,13 @@ public @interface RetrofitService {
 	String baseUrl();
 
 	/**
+	 * Specify new {@link okhttp3.OkHttpClient} bean name.
+	 */
+	String httpClient() default "";
+
+	/**
 	 * Configures the name of the {@link Converter.Factory} bean definition to be used to create services
 	 * discovered through this annotation.
-	 * 
 	 */
 	String converterFactoryRef() default "";
 	

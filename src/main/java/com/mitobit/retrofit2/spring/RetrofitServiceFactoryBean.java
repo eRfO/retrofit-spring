@@ -2,6 +2,7 @@ package com.mitobit.retrofit2.spring;
 
 import static org.springframework.util.Assert.notNull;
 
+import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -21,6 +22,8 @@ public class RetrofitServiceFactoryBean<T> implements FactoryBean<T>, Initializi
 
 	private Class<T> serviceInterface;
 	
+	private OkHttpClient httpClient;
+
 	private Factory converterFactory;
 	
 	private String baseUrl;
@@ -33,6 +36,15 @@ public class RetrofitServiceFactoryBean<T> implements FactoryBean<T>, Initializi
 	 */
 	public void setServiceInterface(Class<T> serviceInterface) {
 		this.serviceInterface = serviceInterface;
+	}
+
+	/**
+	 * Sets the {@link OkHttpClient} to add to Retrofit adapter.
+	 *
+	 * @param httpClient
+	 */
+	public void setHttpClient(OkHttpClient httpClient) {
+		this.httpClient = httpClient;
 	}
 
 	/**
@@ -59,6 +71,9 @@ public class RetrofitServiceFactoryBean<T> implements FactoryBean<T>, Initializi
 		Builder builder = new Retrofit.Builder().baseUrl(baseUrl);
 		if (converterFactory != null) {
 			builder.addConverterFactory(converterFactory);
+		}
+		if (httpClient != null) {
+			builder.client(httpClient);
 		}
 		Retrofit retrofit = builder.build();
 		return retrofit.create(serviceInterface);

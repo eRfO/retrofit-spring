@@ -37,7 +37,7 @@ class RetrofitComponentProvider extends ClassPathScanningCandidateComponentProvi
 	public RetrofitComponentProvider(Iterable<? extends TypeFilter> includeFilters) {
 		super(false);
 		assertRequiredSpringVersionPresent();
-		Assert.notNull(includeFilters);
+		Assert.notNull(includeFilters, "Include filters cannot be null");
 		if (includeFilters.iterator().hasNext()) {
 			for (TypeFilter filter : includeFilters) {
 				addIncludeFilter(filter);
@@ -154,7 +154,7 @@ class RetrofitComponentProvider extends ClassPathScanningCandidateComponentProvi
 		 * @param delegates must not be {@literal null}.
 		 */
 		public AllTypeFilter(List<TypeFilter> delegates) {
-			Assert.notNull(delegates);
+			Assert.notNull(delegates, "delegates must not be null");
 			this.delegates = delegates;
 		}
 

@@ -46,7 +46,9 @@ import retrofit2.Converter;
  */
 public class RetrofitBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware, EnvironmentAware {
 
+	private static final String HTTP_CLIENT_REF = "httpClient";
 	private static final String CONVERTER_FACTORY_REF = "converterFactoryRef";
+
 	private ResourceLoader resourceLoader;
 	private Environment environment;	
 	
@@ -84,6 +86,8 @@ public class RetrofitBeanDefinitionRegistrar implements ImportBeanDefinitionRegi
 			String beanClassName = scanneDefinition.getBeanClassName();
 			Map<String, Object> serviceAttributes = scanneDefinition.getMetadata().getAnnotationAttributes(RetrofitService.class.getName());
 			Map<String, Object> qualifierAttributes = scanneDefinition.getMetadata().getAnnotationAttributes(Qualifier.class.getName());
+			// check http client
+			String httpClientRef = (String) serviceAttributes.get(HTTP_CLIENT_REF);
 			// check converter factory
 			String converterFactoryRef = (String) serviceAttributes.get(CONVERTER_FACTORY_REF);
 			if (StringUtils.isEmpty(converterFactoryRef)) {
@@ -93,6 +97,9 @@ public class RetrofitBeanDefinitionRegistrar implements ImportBeanDefinitionRegi
 			BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(RetrofitServiceFactoryBean.class);
 			builder.addPropertyValue("serviceInterface", beanClassName);
 			builder.addPropertyValue("baseUrl", serviceAttributes.get("baseUrl"));
+			if (!StringUtils.isEmpty(httpClientRef)) {
+				builder.addPropertyReference("httpClient", httpClientRef);
+			}
 			if (converterFactoryRef != null) {
 				builder.addPropertyReference("converterFactory", converterFactoryRef);
 			}

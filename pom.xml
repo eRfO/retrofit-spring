@@ -21,7 +21,7 @@
 	
 	<properties>
 		<retrofit.version>2.3.0</retrofit.version>
-		<spring.version>4.2.4.RELEASE</spring.version>
+		<spring.version>4.3.14.RELEASE</spring.version>
 	</properties>
 
 	<dependencies>
